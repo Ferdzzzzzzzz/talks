@@ -1,0 +1,21 @@
+{
+    // "editor.rulers": [80],
+    "workbench.colorCustomizations": {
+        "editorRuler.foreground": "#ff4081"
+    },
+    "editor.fontFamily": "Fira Code",
+    "editor.fontLigatures": true,
+    "files.exclude": {
+        "**/.git": true,
+        "**/lib": true,
+        "**/.gitignore": true,
+        "**/node_modules": false,
+        "**/*.bs.js": true,
+        "**/.bsb.lock": true,
+        "**/.merlin": true,
+        "**/bsconfig.json": false,
+        "**/yarn.lock": true,
+        "**/snowpack.config.mjs": false,
+        "**/postcss.config.js": true
+    }
+}

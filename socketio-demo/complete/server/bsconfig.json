@@ -1,0 +1,19 @@
+{
+    "name": "server",
+    "sources": [
+        {
+            "dir": "src",
+            "subdirs": true
+        }
+    ],
+    "package-specs": [
+        {
+            "module": "es6",
+            "in-source": true
+        }
+    ],
+    "suffix": ".bs.js",
+    "reason": {},
+    "bs-dependencies": [],
+    "pinned-dependencies": []
+}

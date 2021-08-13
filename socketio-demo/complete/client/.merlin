@@ -1,0 +1,14 @@
+####{BSB GENERATED: NO EDIT
+FLG -ppx '/usr/local/lib/node_modules/rescript/darwin/bsc.exe -as-ppx -bs-jsx 3'
+S /usr/local/lib/node_modules/rescript/lib/ocaml
+B /usr/local/lib/node_modules/rescript/lib/ocaml
+FLG -w +a-4-9-20-40-41-42-50-61-102
+S /Users/ferdinandsteenkamp/Desktop/socket-demo/node_modules/@rescript/react/lib/ocaml
+B /Users/ferdinandsteenkamp/Desktop/socket-demo/node_modules/@rescript/react/lib/ocaml
+S src
+B lib/bs/src
+S src/bindings
+B lib/bs/src/bindings
+S src/ui
+B lib/bs/src/ui
+####BSB GENERATED: NO EDIT}

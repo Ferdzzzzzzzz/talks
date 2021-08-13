@@ -1,0 +1,18 @@
+rescript = 1
+rule cp
+  command = cp $i $out
+rule touch
+ command = touch $out
+o index.cmi : cp ../bs/src/index.cmi
+o index.cmj : cp ../bs/src/index.cmj
+o index.cmt : cp ../bs/src/index.cmt
+o index.res : cp ../../src/index.res
+o ChatMessages.cmi : cp ../bs/src/ChatMessages.cmi
+o ChatMessages.cmj : cp ../bs/src/ChatMessages.cmj
+o ChatMessages.cmt : cp ../bs/src/ChatMessages.cmt
+o ChatMessages.res : cp ../../src/ChatMessages.res
+o SocketIOServer.cmi : cp ../bs/src/bindings/SocketIOServer.cmi
+o SocketIOServer.cmj : cp ../bs/src/bindings/SocketIOServer.cmj
+o SocketIOServer.cmt : cp ../bs/src/bindings/SocketIOServer.cmt
+o SocketIOServer.res : cp ../../src/bindings/SocketIOServer.res
+build install.stamp : touch index.cmi index.cmj ChatMessages.cmi ChatMessages.cmj SocketIOServer.cmi SocketIOServer.cmj 

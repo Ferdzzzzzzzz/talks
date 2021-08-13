@@ -1,0 +1,10 @@
+####{BSB GENERATED: NO EDIT
+FLG -ppx '/usr/local/lib/node_modules/rescript/darwin/bsc.exe -as-ppx '
+S /usr/local/lib/node_modules/rescript/lib/ocaml
+B /usr/local/lib/node_modules/rescript/lib/ocaml
+FLG -w +a-4-9-20-40-41-42-50-61-102
+S src
+B lib/bs/src
+S src/bindings
+B lib/bs/src/bindings
+####BSB GENERATED: NO EDIT}
