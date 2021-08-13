@@ -1,0 +1,26 @@
+rescript = 1
+rule cp
+  command = cp $i $out
+rule touch
+ command = touch $out
+o index.cmi : cp ../bs/src/index.cmi
+o index.cmj : cp ../bs/src/index.cmj
+o index.cmt : cp ../bs/src/index.cmt
+o index.res : cp ../../src/index.res
+o ChatMessages.cmi : cp ../bs/src/ChatMessages.cmi
+o ChatMessages.cmj : cp ../bs/src/ChatMessages.cmj
+o ChatMessages.cmt : cp ../bs/src/ChatMessages.cmt
+o ChatMessages.res : cp ../../src/ChatMessages.res
+o Snowpack.cmi : cp ../bs/src/bindings/Snowpack.cmi
+o Snowpack.cmj : cp ../bs/src/bindings/Snowpack.cmj
+o Snowpack.cmt : cp ../bs/src/bindings/Snowpack.cmt
+o Snowpack.res : cp ../../src/bindings/Snowpack.res
+o SocketClient.cmi : cp ../bs/src/bindings/SocketClient.cmi
+o SocketClient.cmj : cp ../bs/src/bindings/SocketClient.cmj
+o SocketClient.cmt : cp ../bs/src/bindings/SocketClient.cmt
+o SocketClient.res : cp ../../src/bindings/SocketClient.res
+o App.cmi : cp ../bs/src/ui/App.cmi
+o App.cmj : cp ../bs/src/ui/App.cmj
+o App.cmt : cp ../bs/src/ui/App.cmt
+o App.res : cp ../../src/ui/App.res
+build install.stamp : touch index.cmi index.cmj ChatMessages.cmi ChatMessages.cmj Snowpack.cmi Snowpack.cmj SocketClient.cmi SocketClient.cmj App.cmi App.cmj 

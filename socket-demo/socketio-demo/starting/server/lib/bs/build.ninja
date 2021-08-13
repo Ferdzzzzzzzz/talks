@@ -1,0 +1,19 @@
+rescript = 1
+rule astj
+  command = /usr/local/lib/node_modules/rescript/darwin/bsc.exe  -bs-v 9.1.4  -absname -bs-ast -o $out $i
+o src/index.ast : astj ../../src/index.res
+rule deps
+  command = /usr/local/lib/node_modules/rescript/darwin/bsb_helper.exe -hash 4777a9ace8950c3ced6d1f9fbe028065 $in
+  restat = 1
+o src/index.d : deps src/index.ast
+rule mij
+  command = /usr/local/lib/node_modules/rescript/darwin/bsc.exe -I src/bindings -I src   -bs-package-name server -bs-package-output es6:$in_d:.bs.js $i
+  dyndep = 1
+  restat = 1
+o src/index.cmj src/index.cmi ../../src/index.bs.js : mij src/index.ast
+o src/ChatMessages.ast : astj ../../src/ChatMessages.res
+o src/ChatMessages.d : deps src/ChatMessages.ast
+o src/ChatMessages.cmj src/ChatMessages.cmi ../../src/ChatMessages.bs.js : mij src/ChatMessages.ast
+o src/bindings/SocketIOServer.ast : astj ../../src/bindings/SocketIOServer.res
+o src/bindings/SocketIOServer.d : deps src/bindings/SocketIOServer.ast
+o src/bindings/SocketIOServer.cmj src/bindings/SocketIOServer.cmi ../../src/bindings/SocketIOServer.bs.js : mij src/bindings/SocketIOServer.ast
