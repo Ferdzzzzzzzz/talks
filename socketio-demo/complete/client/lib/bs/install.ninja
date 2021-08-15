@@ -15,12 +15,16 @@ o Snowpack.cmi : cp ../bs/src/bindings/Snowpack.cmi
 o Snowpack.cmj : cp ../bs/src/bindings/Snowpack.cmj
 o Snowpack.cmt : cp ../bs/src/bindings/Snowpack.cmt
 o Snowpack.res : cp ../../src/bindings/Snowpack.res
-o SocketClient.cmi : cp ../bs/src/bindings/SocketClient.cmi
-o SocketClient.cmj : cp ../bs/src/bindings/SocketClient.cmj
-o SocketClient.cmt : cp ../bs/src/bindings/SocketClient.cmt
-o SocketClient.res : cp ../../src/bindings/SocketClient.res
+o Evergreen.cmi : cp ../bs/src/bindings/Evergreen.cmi
+o Evergreen.cmj : cp ../bs/src/bindings/Evergreen.cmj
+o Evergreen.cmt : cp ../bs/src/bindings/Evergreen.cmt
+o Evergreen.res : cp ../../src/bindings/Evergreen.res
+o SocketIOClient.cmi : cp ../bs/src/bindings/SocketIOClient.cmi
+o SocketIOClient.cmj : cp ../bs/src/bindings/SocketIOClient.cmj
+o SocketIOClient.cmt : cp ../bs/src/bindings/SocketIOClient.cmt
+o SocketIOClient.res : cp ../../src/bindings/SocketIOClient.res
 o App.cmi : cp ../bs/src/ui/App.cmi
 o App.cmj : cp ../bs/src/ui/App.cmj
 o App.cmt : cp ../bs/src/ui/App.cmt
 o App.res : cp ../../src/ui/App.res
-build install.stamp : touch index.cmi index.cmj ChatMessages.cmi ChatMessages.cmj Snowpack.cmi Snowpack.cmj SocketClient.cmi SocketClient.cmj App.cmi App.cmj 
+build install.stamp : touch index.cmi index.cmj ChatMessages.cmi ChatMessages.cmj Snowpack.cmi Snowpack.cmj Evergreen.cmi Evergreen.cmj SocketIOClient.cmi SocketIOClient.cmj App.cmi App.cmj 

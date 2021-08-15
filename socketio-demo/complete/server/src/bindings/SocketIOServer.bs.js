@@ -29,8 +29,11 @@ function Server(Messages) {
     socket.emit("message", obj);
     
   };
-  var broadcast = function (socket, obj) {
-    socket.emit("message", obj);
+  var broadcast = function (socket) {
+    return socket.broadcast;
+  };
+  var emitBroadcast = function (broadcast, obj) {
+    broadcast.emit("message", obj);
     
   };
   return {
@@ -66,6 +69,10 @@ function Server(Messages) {
               return SocketIo(prim0, prim1);
             }),
           onConnect: onConnect,
+          listen: (function (prim0, prim1) {
+              prim0.listen(prim1);
+              
+            }),
           getId: (function (prim) {
               return prim.id;
             }),
@@ -91,7 +98,8 @@ function Server(Messages) {
             }),
           emit: emit,
           emitToSocket: emitToSocket,
-          broadcast: broadcast
+          broadcast: broadcast,
+          emitBroadcast: emitBroadcast
         };
 }
 

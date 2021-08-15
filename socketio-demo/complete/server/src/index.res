@@ -1,11 +1,14 @@
 open SocketIOServer
 
-let httpServer = Http.createServer()
-
 module IO = Server(ChatMessages)
 
-let io = IO.createWithHttpAndOptions(
-  httpServer,
+type chatState = {mutable userCount: int}
+
+let state = {
+  userCount: 0,
+}
+
+let io = IO.createWithOptions(
   IO.makeOptions(
     ~cors={
       origin: "http://localhost:8080",
@@ -15,36 +18,27 @@ let io = IO.createWithHttpAndOptions(
   ),
 )
 
-let userCount = 0
-
-type state = {mutable userCount: int}
-
-let currentState = {
-  userCount: 0,
-}
-
 io->IO.onConnect(socket => {
-  Js.log("connection success :) ")
+  state.userCount = state.userCount + 1
+  Js.log("client connected")
 
-  currentState.userCount = currentState.userCount + 1
+  io->IO.emit(UsersConnected(state.userCount))
 
-  open IO
-  io->emit(UsersConnected(currentState.userCount))
-
-  socket->onDisconnect(() => {
-    currentState.userCount = currentState.userCount - 1
-    io->emit(UsersConnected(currentState.userCount))
-    Js.log("Socket disconnected")
+  socket->IO.onDisconnect(() => {
+    state.userCount = state.userCount - 1
+    io->IO.emit(UsersConnected(state.userCount))
+    Js.log("client disconnected")
   })
 
-  socket->on(msg =>
+  socket->IO.on(msg =>
     switch msg {
-    | ChatMsg(msg) => Js.log(msg)
-    | StatusUpdate(status) => Js.log(status)
+    | ChatMsg(msg) => {
+        open IO
+        socket->broadcast->emitBroadcast(ChatMsg(msg))
+      }
     }
   )
 })
 
-httpServer->Http.listen(4000, () => {
-  Js.log("listening on port 4000")
-})
+Js.log("listening on port 4000")
+io->IO.listen(4000)

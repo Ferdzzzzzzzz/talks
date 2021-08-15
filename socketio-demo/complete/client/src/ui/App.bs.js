@@ -2,70 +2,265 @@
 
 import * as Curry from "rescript/lib/es6/curry.js";
 import * as React from "react";
+import * as Evergreen from "../bindings/Evergreen.bs.js";
+import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
 import * as ChatMessages from "../ChatMessages.bs.js";
-import * as SocketClient from "../bindings/SocketClient.bs.js";
+import * as SocketIOClient from "../bindings/SocketIOClient.bs.js";
 
-function App$SocketView(Props) {
-  var match = React.useState(function () {
-        return 0;
+var IO = SocketIOClient.Client(ChatMessages);
+
+function App$ConnectionStatus(Props) {
+  var connectionStatus = Props.connectionStatus;
+  var userCount = Props.userCount;
+  var match = typeof connectionStatus === "number" ? (
+      connectionStatus !== 0 ? [
+          "Connecting...",
+          /* Warning */2
+        ] : [
+          "Not Connected",
+          /* Danger */3
+        ]
+    ) : [
+      "Connected",
+      /* Success */1
+    ];
+  var connectionStatus$1 = React.createElement(Evergreen.StatusIndicator.WithIntent.make, {
+        children: React.createElement(Evergreen.$$Text.make, {
+              children: match[0]
+            }),
+        intent: match[1]
       });
-  var setUsersConnected = match[1];
-  React.useEffect((function () {
-          var ChatClient = SocketClient.Client(ChatMessages);
-          var socket = Curry._1(ChatClient.io, "ws://localhost:4000");
-          Curry._2(ChatClient.onConnect, socket, (function (param) {
-                  console.log("connection success");
-                  
-                }));
-          Curry._2(ChatClient.onDisconnect, socket, (function (param) {
-                  console.log("disconnected");
-                  
-                }));
-          Curry._2(ChatClient.on, socket, (function (msg) {
-                  switch (msg.TAG | 0) {
-                    case /* ChatMsg */0 :
-                    case /* StatusUpdate */1 :
-                        console.log(msg._0);
-                        return ;
-                    case /* UsersConnected */2 :
-                        var count = msg._0;
-                        return Curry._1(setUsersConnected, (function (param) {
-                                      return count;
-                                    }));
-                    
-                  }
-                }));
-          return (function (param) {
-                    return Curry._1(ChatClient.disconnect, socket);
-                  });
-        }), []);
-  return React.createElement("div", undefined, React.createElement("button", undefined, "Update Status"), React.createElement("button", undefined, "Update Status"), React.createElement("div", undefined, "Users Connected -> " + String(match[0])));
+  var userCount$1 = userCount !== undefined ? React.createElement(Evergreen.$$Text.make, {
+          children: "User Count: " + String(userCount)
+        }) : null;
+  return React.createElement("div", {
+              className: "status"
+            }, connectionStatus$1, userCount$1);
 }
 
-var SocketView = {
-  make: App$SocketView
+var ConnectionStatus = {
+  make: App$ConnectionStatus
+};
+
+function App$ChatBubble(Props) {
+  var text = Props.text;
+  var pos = Props.pos;
+  var match = pos ? [
+      "chat-bubble-r",
+      /* Success */1
+    ] : [
+      "chat-bubble-l",
+      /* NoIntent */0
+    ];
+  return React.createElement("div", {
+              className: match[0]
+            }, React.createElement("div", {
+                  className: "w"
+                }, React.createElement(Evergreen.Alert.make, {
+                      intent: match[1],
+                      hasIcon: false,
+                      title: text
+                    })));
+}
+
+var ChatBubble = {
+  make: App$ChatBubble
+};
+
+function App$ChatBubbles(Props) {
+  var messages = Props.messages;
+  return React.createElement("div", {
+              className: "chat-bubbles"
+            }, Belt_Array.mapWithIndex(messages, (function (index, msg) {
+                    var pos = msg.isMe ? /* Right */1 : /* Left */0;
+                    return React.createElement(App$ChatBubble, {
+                                text: msg.message,
+                                pos: pos,
+                                key: String(index)
+                              });
+                  })));
+}
+
+var ChatBubbles = {
+  make: App$ChatBubbles
+};
+
+function App$Chat(Props) {
+  var setUserCount = Props.setUserCount;
+  var setConnectionStatus = Props.setConnectionStatus;
+  var socket = Props.socket;
+  var match = React.useState(function () {
+        return [];
+      });
+  var setMessages = match[1];
+  var match$1 = React.useState(function () {
+        return "";
+      });
+  var setText = match$1[1];
+  var text = match$1[0];
+  var handleInputChange = function ($$event) {
+    var value = $$event.currentTarget.value;
+    return Curry._1(setText, (function (param) {
+                  return value;
+                }));
+  };
+  React.useEffect((function () {
+          Curry._2(IO.on, socket, (function (msg) {
+                  if (msg.TAG !== /* ChatMsg */0) {
+                    return Curry._1(setUserCount, msg._0);
+                  }
+                  var msg$1 = msg._0;
+                  return Curry._1(setMessages, (function (currState) {
+                                return Belt_Array.concat(currState, [{
+                                              message: msg$1,
+                                              isMe: false
+                                            }]);
+                              }));
+                }));
+          return (function (param) {
+                    Curry._1(IO.disconnect, socket);
+                    return Curry._1(setConnectionStatus, /* NotConnected */0);
+                  });
+        }), []);
+  return React.createElement("div", undefined, React.createElement(App$ChatBubbles, {
+                  messages: match[0]
+                }), React.createElement("div", {
+                  className: "input"
+                }, React.createElement(Evergreen.TextInput.make, {
+                      value: text,
+                      onChange: handleInputChange
+                    }), React.createElement("div", {
+                      className: "empty"
+                    }), React.createElement(Evergreen.Button.make, {
+                      appearance: /* Primary */2,
+                      onClick: (function (param) {
+                          Curry._2(IO.emit, socket, /* ChatMsg */{
+                                _0: text
+                              });
+                          Curry._1(setMessages, (function (currState) {
+                                  return Belt_Array.concat(currState, [{
+                                                message: text,
+                                                isMe: true
+                                              }]);
+                                }));
+                          return Curry._1(setText, (function (param) {
+                                        return "";
+                                      }));
+                        }),
+                      children: "Send"
+                    })));
+}
+
+var Chat = {
+  make: App$Chat
+};
+
+function App$Loading(Props) {
+  var setConnectionStatus = Props.setConnectionStatus;
+  var setUserCount = Props.setUserCount;
+  React.useEffect((function () {
+          var socket = Curry._1(IO.io, "ws://localhost:4000");
+          Curry._2(IO.onDisconnect, socket, (function (param) {
+                  Curry._1(setConnectionStatus, /* NotConnected */0);
+                  return Curry._1(setUserCount, undefined);
+                }));
+          Curry._2(IO.onConnect, socket, (function (param) {
+                  return Curry._1(setConnectionStatus, /* Connected */{
+                              socket: socket
+                            });
+                }));
+          
+        }), []);
+  return null;
+}
+
+var Loading = {
+  make: App$Loading
 };
 
 function App(Props) {
   var match = React.useState(function () {
+        return /* NotConnected */0;
+      });
+  var setConnectionStatus = match[1];
+  var connectionStatus = match[0];
+  var match$1 = React.useState(function () {
+        
+      });
+  var setUserCount = match$1[1];
+  var match$2 = React.useState(function () {
         return false;
       });
-  var setShow = match[1];
-  var show = match[0];
-  return React.createElement("div", undefined, React.createElement("button", {
-                  onClick: (function (param) {
-                      return Curry._1(setShow, (function (b) {
-                                    return !b;
+  var setShowChat = match$2[1];
+  var showChat = match$2[0];
+  var chatComponent = showChat ? (
+      typeof connectionStatus === "number" ? (
+          connectionStatus !== 0 ? React.createElement(App$Loading, {
+                  setConnectionStatus: (function (status) {
+                      return Curry._1(setConnectionStatus, (function (param) {
+                                    return status;
+                                  }));
+                    }),
+                  setUserCount: (function (count) {
+                      return Curry._1(setUserCount, (function (param) {
+                                    return count;
                                   }));
                     })
-                }, show ? "Disconnect" : "Connect"), show ? React.createElement(App$SocketView, {}) : null);
+                }) : null
+        ) : React.createElement(App$Chat, {
+              setUserCount: (function (count) {
+                  return Curry._1(setUserCount, (function (param) {
+                                return count;
+                              }));
+                }),
+              setConnectionStatus: (function (status) {
+                  return Curry._1(setConnectionStatus, (function (param) {
+                                return status;
+                              }));
+                }),
+              socket: connectionStatus.socket
+            })
+    ) : null;
+  var match$3 = showChat ? [
+      "Disconnect",
+      /* NoIntent */0
+    ] : [
+      "Connect",
+      /* Success */1
+    ];
+  var tmp = {
+    connectionStatus: connectionStatus
+  };
+  var tmp$1 = match$1[0];
+  if (tmp$1 !== undefined) {
+    tmp.userCount = tmp$1;
+  }
+  return React.createElement("div", undefined, React.createElement(Evergreen.Button.make, {
+                  onClick: (function (param) {
+                      Curry._1(setConnectionStatus, (function (param) {
+                              return /* Loading */1;
+                            }));
+                      return Curry._1(setShowChat, (function (b) {
+                                    return !b;
+                                  }));
+                    }),
+                  intent: match$3[1],
+                  children: match$3[0]
+                }), React.createElement("div", {
+                  className: "main"
+                }, React.createElement(App$ConnectionStatus, tmp), chatComponent));
 }
 
 var make = App;
 
 export {
-  SocketView ,
+  IO ,
+  ConnectionStatus ,
+  ChatBubble ,
+  ChatBubbles ,
+  Chat ,
+  Loading ,
   make ,
   
 }
-/* react Not a pure module */
+/* IO Not a pure module */

@@ -1,9 +1,9 @@
 9.1.4
-/Users/ferdinandsteenkamp/Desktop/socket-demo/client
+/Users/ferdinandsteenkamp/Desktop/talks/socketio-demo/starting/client
 0
-bsconfig.json	0x1.8459a72fb26cap+30
-src	0x1.845a30ae22274p+30
-src/bindings	0x1.8459c069ed39ap+30
-src/ui	0x1.8459c06a0fb02p+30
+bsconfig.json	0x1.845a3c94aa5b4p+30
+src	0x1.845ea95858597p+30
+src/bindings	0x1.845a3c94e6dep+30
+src/ui	0x1.845a3c94eac52p+30
 ===
 /usr/local/lib/node_modules/rescript/darwin/rescript.exe	0x1.83dffdd3525f5p+30
