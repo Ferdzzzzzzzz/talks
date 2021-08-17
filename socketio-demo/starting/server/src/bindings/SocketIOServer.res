@@ -36,6 +36,7 @@ module type ServerType = (Messages: MessagesType) =>
   let createWithPort: (int, options) => t
 
   let onConnect: (t, socket => unit) => unit
+  let listen: (t, int) => unit
 
   let getId: socket => room
   let getRooms: socket => Js.t<'a>
@@ -49,7 +50,10 @@ module type ServerType = (Messages: MessagesType) =>
   let disconnect: (socket, bool) => socket
   let emit: (t, Messages.serverToClient) => unit
   let emitToSocket: (socket, Messages.serverToClient) => unit
-  let broadcast: (socket, Messages.serverToClient) => unit
+
+  type broadcast
+  let broadcast: socket => broadcast
+  let emitBroadcast: (broadcast, Messages.serverToClient) => unit
 }
 
 module Server: ServerType = (Messages: MessagesType) => {
@@ -82,6 +86,7 @@ module Server: ServerType = (Messages: MessagesType) => {
   external createWithPort: (int, options) => t = "socket.io"
 
   @send external _onConnect: (t, string, socket => unit) => unit = "on"
+  @send external listen: (t, int) => unit = "listen"
 
   let onConnect = (server, f) => _onConnect(server, "connection", f)
 
@@ -109,7 +114,12 @@ module Server: ServerType = (Messages: MessagesType) => {
   let emitToSocket = (socket: socket, obj: Messages.serverToClient) =>
     _emitToSocket(socket, "message", obj)
 
-  @send external _broadcast: (socket, string, 'b) => unit = "broadcast"
-  let broadcast = (socket: socket, obj: Messages.serverToClient) =>
-    _emitToSocket(socket, "message", obj)
+  type broadcast
+
+  @get external _broadcast: socket => broadcast = "broadcast"
+  let broadcast = (socket: socket) => _broadcast(socket)
+
+  @send external _emitBroadcast: (broadcast, string, 'b) => unit = "emit"
+  let emitBroadcast = (broadcast: broadcast, obj: Messages.serverToClient) =>
+    _emitBroadcast(broadcast, "message", obj)
 }

@@ -1,0 +1,48 @@
+.main {
+  margin-top: 10%;
+  margin-left: 25%;
+  margin-right: 25%;
+  background-color: #fafbff;
+  padding: 2%;
+}
+
+.status {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.input {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.empty {
+  width: 2%;
+}
+
+.chat-bubbles {
+  height: 500px;
+  padding: 1%;
+  overflow: scroll;
+}
+
+.chat-bubble-l {
+  margin-bottom: 1%;
+  display: flex;
+  width: 100%;
+  margin-right: 25%;
+  justify-content: start;
+}
+
+.chat-bubble-r {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1%;
+}
+
+.w {
+  max-width: 75%;
+}

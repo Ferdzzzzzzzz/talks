@@ -7,10 +7,6 @@ o index.cmi : cp ../bs/src/index.cmi
 o index.cmj : cp ../bs/src/index.cmj
 o index.cmt : cp ../bs/src/index.cmt
 o index.res : cp ../../src/index.res
-o deleteme.cmi : cp ../bs/src/deleteme.cmi
-o deleteme.cmj : cp ../bs/src/deleteme.cmj
-o deleteme.cmt : cp ../bs/src/deleteme.cmt
-o deleteme.res : cp ../../src/deleteme.res
 o ChatMessages.cmi : cp ../bs/src/ChatMessages.cmi
 o ChatMessages.cmj : cp ../bs/src/ChatMessages.cmj
 o ChatMessages.cmt : cp ../bs/src/ChatMessages.cmt
@@ -27,4 +23,4 @@ o App.cmi : cp ../bs/src/ui/App.cmi
 o App.cmj : cp ../bs/src/ui/App.cmj
 o App.cmt : cp ../bs/src/ui/App.cmt
 o App.res : cp ../../src/ui/App.res
-build install.stamp : touch index.cmi index.cmj deleteme.cmi deleteme.cmj ChatMessages.cmi ChatMessages.cmj Snowpack.cmi Snowpack.cmj SocketClient.cmi SocketClient.cmj App.cmi App.cmj 
+build install.stamp : touch index.cmi index.cmj ChatMessages.cmi ChatMessages.cmj Snowpack.cmi Snowpack.cmj SocketClient.cmi SocketClient.cmj App.cmi App.cmj 

@@ -4,7 +4,7 @@ rule astj
   command = /usr/local/lib/node_modules/rescript/darwin/bsc.exe  -bs-v 9.1.4 -bs-jsx 3  -absname -bs-ast -o $out $i
 o src/index.ast : astj ../../src/index.res
 rule deps
-  command = /usr/local/lib/node_modules/rescript/darwin/bsb_helper.exe -hash c3e247ddfa259b4e8462fbb0bc88067a $in
+  command = /usr/local/lib/node_modules/rescript/darwin/bsb_helper.exe -hash 4efda78c19f07ec05ef8fc7e1b1c4ff9 $in
   restat = 1
 o src/index.d : deps src/index.ast
 rule mij
@@ -12,9 +12,6 @@ rule mij
   dyndep = 1
   restat = 1
 o src/index.cmj src/index.cmi ../../src/index.bs.js : mij src/index.ast
-o src/deleteme.ast : astj ../../src/deleteme.res
-o src/deleteme.d : deps src/deleteme.ast
-o src/deleteme.cmj src/deleteme.cmi ../../src/deleteme.bs.js : mij src/deleteme.ast
 o src/ChatMessages.ast : astj ../../src/ChatMessages.res
 o src/ChatMessages.d : deps src/ChatMessages.ast
 o src/ChatMessages.cmj src/ChatMessages.cmi ../../src/ChatMessages.bs.js : mij src/ChatMessages.ast
